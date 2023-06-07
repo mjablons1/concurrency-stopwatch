@@ -1,6 +1,8 @@
 # concurrency-stopwatch
 A minimum working example comparing concurrency syntax in Java, Python, Go and Erlang.
 
+<em>IMPORTANT NOTE: The code implements a toy-stopwatch for didactic reason of syntax comparison between these programming languages using built-ins as much as possible. To achieve this, the stopwatch is not meant to be accurate or address  thread-safety when scaled (especially Java and Python case).</em>
+
 ## Process/Thread diagram
 <img 
     style="display: block; 
@@ -12,7 +14,7 @@ A minimum working example comparing concurrency syntax in Java, Python, Go and E
 ## Requirements
 * Maximum 3 threads or processes:  
     * counter - fast counting time base for the timer,
-    * refresh - print out stopwatch format HH:MM:SS:Ms by converting counts from counter,
+    * refresh - console printout stopwatch format HH:MM:SS:Ms by converting counts from counter,
     * read_input - (typically main thread/process) reading user console inputs
         * \<r> reset count
         * \<q> quit,
