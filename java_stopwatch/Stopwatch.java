@@ -3,12 +3,12 @@ import java.util.Scanner;
 public class Stopwatch {
 
     class Control {
-        public final int refresh_rate_msec = 1000;
-        public final int counter_rate_msec = 100;
+        public final int refreshRateMsec = 1000;
+        public final int counterRateMsec = 100;
 
-        public final int counts_per_sec = 1000 / counter_rate_msec;
-        public final int counts_per_min = 60 * counts_per_sec;
-        public final int counts_per_hour = 3600 * counts_per_sec;
+        public final int countsPerSec = 1000 / counterRateMsec;
+        public final int countsPerMin = 60 * countsPerSec;
+        public final int countsPerHour = 3600 * countsPerSec;
         public volatile int count = 0;
         public volatile boolean run = true;
       }
@@ -20,7 +20,7 @@ public class Stopwatch {
         public void run() { 
             try {
                 while(control.run){
-                    Thread.sleep(control.counter_rate_msec);
+                    Thread.sleep(control.counterRateMsec);
                     control.count+=1; // to be safe we might want to increase count from a separate, "synchronized void increment()" method, but same issue as in python...
                 }
             } catch (InterruptedException e) {
@@ -36,8 +36,8 @@ public class Stopwatch {
                 while(control.run){
                     //System.out.print("\033[H\033[2J");
                     //System.out.flush();
-                    System.out.format(count_to_time(control.count));
-                    Thread.sleep(control.refresh_rate_msec);
+                    System.out.format(countToTime(control.count));
+                    Thread.sleep(control.refreshRateMsec);
                 }
             } catch (InterruptedException e) {
                 System.out.format("Refresh thread was interrupted");
@@ -45,27 +45,27 @@ public class Stopwatch {
         }
     }
     
-    public String count_to_time(int count){
-        int hours = count / control.counts_per_hour;
-        int reminder = count % control.counts_per_hour;
-        int minutes = reminder / control.counts_per_min;
-        int reminder2 = reminder % control.counts_per_min;
-        int seconds = reminder2 / control.counts_per_sec;
-        int milisec = reminder2 % control.counts_per_sec;
+    public String countToTime(int count){
+        int hours = count / control.countsPerHour;
+        int reminder = count % control.countsPerHour;
+        int minutes = reminder / control.countsPerMin;
+        int reminder2 = reminder % control.countsPerMin;
+        int seconds = reminder2 / control.countsPerSec;
+        int milisec = reminder2 % control.countsPerSec;
         
         return (hours + ":" + minutes + ":" + seconds + ":" + milisec + "\n");
     }
 
-    public void read_input(){
+    public void readInput(){
         Scanner scanner = new Scanner(System.in);
 
         while (true){
-            String key_input = scanner.nextLine();
-            if (key_input.equals("q")){
+            String keyInput = scanner.nextLine();
+            if (keyInput.equals("q")){
                 control.run = false;
                 break;
             }
-            else if (key_input.equals("r")){
+            else if (keyInput.equals("r")){
                 control.count = 0;
             }
         }
@@ -76,16 +76,16 @@ public class Stopwatch {
     throws InterruptedException {
         Stopwatch stopwatch = new Stopwatch();
 
-        Thread counter_thread = new Thread(stopwatch.new Counter());
-        Thread refresh_thread = new Thread(stopwatch.new Refresh());
+        Thread counterThread = new Thread(stopwatch.new Counter());
+        Thread refreshThread = new Thread(stopwatch.new Refresh());
 
-        refresh_thread.start();
-        counter_thread.start();
+        refreshThread.start();
+        counterThread.start();
 
-        stopwatch.read_input();
+        stopwatch.readInput();
 
-        refresh_thread.join();
-        counter_thread.join();
+        refreshThread.join();
+        counterThread.join();
     }
         
 }
