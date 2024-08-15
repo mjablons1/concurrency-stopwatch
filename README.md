@@ -1,5 +1,5 @@
 # concurrency-stopwatch
-A minimum working example comparing concurrency syntax in Java, C++, Python, Go and Erlang.
+A minimum working example comparing concurrency syntax in Java, C++, Rust, Python, Go and Erlang.
 
 <em>IMPORTANT NOTE: The code implements a toy-stopwatch for didactic reason of syntax comparison between these programming languages using built-ins as much as possible. To achieve this, the stopwatch is not meant to be accurate or address  thread-safety when scaled (especially Java and Python case).</em>
 
